@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const schemaValidator = require("./apps/middlewares/schemaValidator");
+const { verifyJwt } = require("./apps/middlewares/authentication");
 const AuthenticationController = require("./apps/controllers/AuthenticationController");
 const authSchema = require("./schema/auth.schema.json");
 const UserController = require("./apps/controllers/UserController");
@@ -13,8 +14,10 @@ routes.post(
   schemaValidator(authSchema),
   AuthenticationController.authenticate
 );
+
 routes.get("/health", (req, res) => {
   return res.send({ message: "Connect with sucess!" });
 });
+routes.use(verifyJwt);
 
 module.exports = routes;
