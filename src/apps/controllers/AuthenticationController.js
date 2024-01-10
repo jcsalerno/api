@@ -11,7 +11,7 @@ class AuthenticationController {
     } else if (user_name) {
       whereClause = { user_name };
     } else {
-      return res.status(401).json({ error: "We need a email or password" });
+      return res.status(401).json({ error: "We need a email or user name" });
     }
     const user = await Users.findOne({
       where: whereClause,
@@ -27,8 +27,8 @@ class AuthenticationController {
     const { iv, content } = encrypt(id);
     const newId = `${iv}:${content}`;
 
-    const token = jwt.sign({ newId }, process.env.HASH_BCRYPT, {
-      expiresIn: "7d",
+    const token = jwt.sign({ userId: newId }, process.env.HASH_BCRYPT, {
+      expiresIn: process.env.EXPIRE_IN,
     });
 
     return res

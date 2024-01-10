@@ -11,7 +11,7 @@ const encrypt = (text) => {
     cipher.final(),
   ]);
   return {
-    iv: iv.toString(),
+    iv: iv.toString("hex"),
     content: encrypted.toString("hex"),
   };
 };
