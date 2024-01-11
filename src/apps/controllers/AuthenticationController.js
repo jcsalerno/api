@@ -24,7 +24,8 @@ class AuthenticationController {
     }
     const { id, user_name: userName } = user;
 
-    const { iv, content } = encrypt(id);
+    const { iv, content } = encrypt(id.toString());
+
     const newId = `${iv}:${content}`;
 
     const token = jwt.sign({ userId: newId }, process.env.HASH_BCRYPT, {

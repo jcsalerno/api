@@ -19,5 +19,6 @@ routes.get("/health", (req, res) => {
   return res.send({ message: "Connect with sucess!" });
 });
 routes.use(verifyJwt);
+routes.put("/user", UserController.update);
 
 module.exports = routes;
