@@ -24,6 +24,7 @@ module.exports = new UserController();*/
 
 const bcrypt = require("bcrypt");
 const Users = require("../models/Users");
+const { Op } = require("sequelize");
 
 class UserController {
   async create(req, res) {
@@ -103,6 +104,41 @@ class UserController {
     });
     return res.status(200).json({ message: "User deleted!" });
   }
-}
+  async userProfile(req, res) {
+    try {
+      // Certifique-se de obter o userId do objeto req
+      const userId = req.userId;
 
+      console.log("UserId antes da busca:", userId);
+      const user = await Users.findOne({
+        attributes: [
+          "id",
+          "name",
+          "user_name",
+          "email",
+          "avatar",
+          "bio",
+          "gender",
+        ],
+        where: { id: userId },
+      });
+
+      console.log("Query executada:", Users.findOne.toString());
+      console.log("Resultado da consulta:", user);
+
+      if (!user) {
+        console.log("UserId da busca:", userId);
+        return res.status(400).json({ message: "User not exists!" });
+      }
+
+      const { id, name, user_name, email, avatar, bio, gender } = user;
+      return res
+        .status(200)
+        .json({ id, name, user_name, email, avatar, bio, gender });
+    } catch (error) {
+      console.error("Erro na função userProfile:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+}
 module.exports = new UserController();
