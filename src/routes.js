@@ -34,5 +34,6 @@ routes.delete("/post/:id", PostController.delete);
 routes.put("/post/:id", PostController.update);
 routes.put("/add-likes/:id", PostController.addLikes);
 routes.get("/list-my-posts", PostController.listMyPosts);
+routes.get("/all-posts", PostController.listAllPosts);
 
 module.exports = routes;
